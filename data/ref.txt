@@ -1,5 +1,5 @@
-Overview
+Overview:
 https://docs.djangoproject.com/en/4.2/intro/overview/
 
-Doc
+Docs:
 https://docs.djangoproject.com/en/4.2/
