@@ -11,5 +11,6 @@ ADMIN_ROUTE = os.getenv('ADMIN_ROUTE')
 urlpatterns = [
     path('', index, name='index'),
     path('signup/', signup, name='signup'),
-    path('login/', login, name='login'),
+    path('signin/', signin, name='signin'),
+    path('logout/', logout, name='logout'),
 ]

@@ -1,2 +1,17 @@
 {% load static %}
-<p>NAV</p>
+
+{% if user.is_authenticated %}
+<div>
+    <a href="{% url 'index' %}">HOME</a>
+    <form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <a href="#" onclick="this.closest('form').submit();return false;">LOGOUT</a>
+    </form>
+</div>
+{% else %}
+<div>
+    <a href="{% url 'index' %}">HOME</a>
+    <a href="{% url 'signin' %}">SIGN IN</a>
+    <a href="{% url 'signup' %}">SIGN UP</a>
+</div>
+{% endif %}
