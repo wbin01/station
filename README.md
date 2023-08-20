@@ -1,2 +1,2 @@
-# store
+## store
 Python webstore with Django
