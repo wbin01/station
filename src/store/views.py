@@ -40,4 +40,13 @@ def signup(request):
         return redirect('index')
 
     context = module_context.get_default(request)
-    return render(request, 'signup.html', context)
+    if request.method == 'POST':
+        sign_up_status = module_user.sign_up(request)
+
+        if sign_up_status != 'success':
+            context['warning_message'] = sign_up_status
+            return render(request, 'signup.html', context)
+
+        return redirect('signin')
+    else:
+        return render(request, 'signup.html', context)

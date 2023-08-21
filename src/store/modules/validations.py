@@ -3,35 +3,34 @@ import string
 from django.contrib.auth.models import User
 
 
-def available_email(user, new_email) -> bool:
-    if user.email != new_email:
-        for item in User.objects.all():
-            if item.id != user.id:
-                if new_email == item.email:
-                    return False
+def available_email(email: str) -> bool:
+    for item in User.objects.all():
+        if item.email == email:
+            return False
     return True
 
 
-def available_username(user, new_username) -> bool:
-    if user.username != new_username:
-        for item in User.objects.all():
-            if item.id != user.id:
-                if new_username == item.username:
-                    return False
+def available_username(username: str) -> bool:
+    for item in User.objects.all():
+        if item.username == username:
+            return False
     return True
 
 
 def invalid_email(email: str) -> str | None:
+    if not email:
+        return 'Email cannot be blank'
     if '@' not in email or '.' not in email:
-        return 'O email fornecido é inválido'
+        return 'Invalid email!'
     if User.objects.filter(email=email).exists():
-        return 'Email já cadastrado'
+        return 'Email already exists!'
     return None
 
 
 def invalid_image(image) -> str | None:
-    """..."""
-    msg_err = "Use imagens com extesões 'jpg', 'png' ou 'jpeg'"
+    if not image:
+        return 'Image cannot be blank'
+    msg_err = "Use images with 'jpg', 'png' or 'jpeg' extensions"
     if '.' not in image.name:
         return msg_err
     if image.name.split('.')[-1].lower() not in ['jpg', 'png', 'jpeg']:
@@ -39,12 +38,15 @@ def invalid_image(image) -> str | None:
     return None
 
 
-def invalid_password(password: str, password_confirm: str) -> str | None:
-    if password == '' or password_confirm == '':
-        return None
+def invalid_password(password: str, confirm_password: str) -> str | None:
+    if not password or password == ' ':
+        return 'The password cannot be blank'
+
+    if not confirm_password or confirm_password == ' ':
+        return 'Password confirmation cannot be blank'
 
     if password and len(password) < 8:
-        return 'Senha muito pequena, precisa ter 8 ou mais caracteres'
+        return 'Password must be 8 or more characters'
 
     found_lowercase_in_password = False
     for char in string.ascii_lowercase:
@@ -52,7 +54,7 @@ def invalid_password(password: str, password_confirm: str) -> str | None:
             found_lowercase_in_password = True
             break
     if not found_lowercase_in_password:
-        return 'Sua senha não contém letras minúsculas'
+        return 'The password must contain lowercase letters'
 
     found_uppercase_in_password = False
     for char in string.ascii_uppercase:
@@ -60,7 +62,7 @@ def invalid_password(password: str, password_confirm: str) -> str | None:
             found_uppercase_in_password = True
             break
     if not found_uppercase_in_password:
-        return 'Sua senha não contém letras maiúsculas'
+        return 'The password must contain capital letters'
 
     found_digits_in_password = False
     for char in string.digits:
@@ -68,7 +70,7 @@ def invalid_password(password: str, password_confirm: str) -> str | None:
             found_digits_in_password = True
             break
     if not found_digits_in_password:
-        return 'Sua senha não contém números'
+        return 'The password must contain numbers'
 
     found_punctuation_in_password = False
     for char in string.punctuation:
@@ -76,34 +78,37 @@ def invalid_password(password: str, password_confirm: str) -> str | None:
             found_punctuation_in_password = True
             break
     if not found_punctuation_in_password:
-        return 'Sua senha não contém caracteres especiais'
+        return 'The password must contain special characters'
 
-    if password != password_confirm:
-        return 'As senhas não coincidem'
+    if password != confirm_password:
+        return 'Passwords do not match'
 
     return None
 
 
 def invalid_username(username: str) -> str | None:
+    if not username or username == ' ':
+        return 'Username cannot be blank'
+
     if len(username) < 2:
-        return 'Nome de usuário curto, precisa ter 3 ou mais caracteres'
+        return 'Username must be 3 or more characters'
 
     for char in username:
         if char not in string.ascii_lowercase + string.digits:
-            return f'Nome de usuário não pode conter " {char} "'
+            return f'Username cannot contain " {char} "'
 
     if User.objects.filter(username=username).exists():
-        return 'Usuário já cadastrado'
+        return 'User already registered'
 
     return None
 
 
 def invalid_whitespace(items: list) -> str | None:
     for item in items:
-        if item == ' ':
-            return 'Nenhum item pode ser um espaço em branco'
+        if not item or item == ' ':
+            return 'No item can be a blank'
         elif item[0] == ' ':
-            return 'Nenhum item pode iniciar com um espaço em branco'
+            return 'No item can start with a blank space'
         elif item[-1] == ' ':
-            return 'Nenhum item pode finalizar com um espaço em branco'
+            return 'No item can end with a blank space'
     return None
