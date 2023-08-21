@@ -1,2 +1,2 @@
 ## store
-Python webstore with Django
+Python web station with Django
