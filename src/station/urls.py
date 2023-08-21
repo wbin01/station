@@ -9,5 +9,5 @@ load_dotenv()
 ADMIN_ROUTE = os.getenv('ADMIN_ROUTE')
 
 urlpatterns = [
-    path('', store, name='store'),
+    path('', index, name='index'),
 ]

@@ -5,7 +5,7 @@
     {% if user.is_superuser %}
         Superuser
     {% else %}
-        {{ user.first_name }}
+        {{ user.first_name }} {{ user.username }}
     {% endif %}
 
     <a href="{% url 'index' %}">HOME</a>

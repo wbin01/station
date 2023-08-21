@@ -4,7 +4,6 @@ from django.contrib import auth
 import modules.context as module_context
 
 
-def store(request):
+def index(request):
     context = module_context.get_default(request)
-    context['brand_name'] += ' - Store'
-    return render(request, 'store.html', context)
+    return render(request, 'index.html', context)

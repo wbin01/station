@@ -9,5 +9,7 @@ load_dotenv()
 ADMIN_ROUTE = os.getenv('ADMIN_ROUTE')
 
 urlpatterns = [
-    path('', store, name='store'),
+    path('signup/', signup, name='signup'),
+    path('signin/', signin, name='signin'),
+    path('logout/', logout, name='logout'),
 ]

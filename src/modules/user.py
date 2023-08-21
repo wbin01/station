@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from django.contrib import auth
 
-import store.modules.generators as module_generator
-import store.modules.validations as module_validation
+import modules.generators as module_generator
+import modules.validations as module_validation
 
 
 def sign_in(request) -> str:
