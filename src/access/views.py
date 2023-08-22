@@ -18,7 +18,7 @@ def signin(request):
         return redirect('index')
 
     context = module_context.get_default(request)
-    context['brand_name'] += ' - Access'
+    context['brand_name_tab'] += ' - Access'
     if request.method == 'POST':
         sign_in_status = module_user.sign_in(request)
 
@@ -36,7 +36,7 @@ def signup(request):
         return redirect('index')
 
     context = module_context.get_default(request)
-    context['brand_name'] += ' - Access'
+    context['brand_name_tab'] += ' - Access'
     if request.method == 'POST':
         sign_up_status = module_user.sign_up(request)
 
