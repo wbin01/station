@@ -4,14 +4,33 @@
 
   <div class="container-fluid">
     <div>
-    <a class="text-decoration-none text-bg-dark me-3" href="{% url 'index' %}">{{ brand_name }}</a>
-    <a class="text-decoration-none text-bg-dark" href="{% url 'store' %}">{% translate "Store" %}</a>
+
+      {% if request.path  == '/' %}
+      <a class="text-decoration-none text-bg-dark me-3 border-bottom border-2 border-secondary" href="{% url 'index' %}"> {{ brand_name }} </a>
+      {% else %}
+      <a class="text-decoration-none text-bg-dark me-3 border-bottom border-2 border-secondary border-opacity-25" href="{% url 'index' %}"> {{ brand_name }} </a>
+      {% endif %}
+
+      {% if request.path  == '/store/' %}
+      <a class="text-decoration-none text-bg-dark border-bottom border-2 border-secondary" href="{% url 'store' %}"> {% translate "Store" %} </a>
+      {% else %}
+      <a class="text-decoration-none text-bg-dark border-bottom border-2 border-secondary border-opacity-25" href="{% url 'store' %}"> {% translate "Store" %} </a>
+      {% endif %}
     </div>
 
     <div>
     {% if not user.is_authenticated %}
-    <a class="text-decoration-none text-bg-dark me-3" href="{% url 'signin' %}">{% translate "Sign in" %}</a>
-    <a class="text-decoration-none text-bg-dark" href="{% url 'signup' %}">{% translate "Sign up" %}</a>
+      {% if request.path  == '/access/signin/' %}
+      <a class="text-decoration-none text-bg-dark me-3 border-bottom border-2 border-secondary" href="{% url 'signin' %}"> {% translate "Sign in" %} </a>
+      {% else %}
+      <a class="text-decoration-none text-bg-dark me-3 border-bottom border-2 border-secondary border-opacity-25" href="{% url 'signin' %}"> {% translate "Sign in" %} </a>
+      {% endif %}
+
+      {% if request.path  == '/access/signup/' %}
+      <a class="text-decoration-none text-bg-dark me-3 border-bottom border-2 border-secondary" href="{% url 'signup' %}"> {% translate "Sign up" %} </a>
+      {% else %}
+      <a class="text-decoration-none text-bg-dark me-3 border-bottom border-2 border-secondary border-opacity-25" href="{% url 'signup' %}"> {% translate "Sign up" %} </a>
+      {% endif %}
     {% endif %}
 
     {% if user.is_authenticated %}
@@ -32,33 +51,61 @@
 
     <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
-        {% if user.is_superuser %}
-          Superuser
-        {% else %}
-          {{ user.first_name }}
-        {% endif %}
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+
+        <a class="nav-link" href="#">
+          <div class="row position-relative">
+
+            <div class="col position-relative ms-3 me-2">
+              {% if user.is_superuser %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="#842029" class="bi bi-shield-fill-exclamation position-absolute top-50 start-50 translate-middle" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.777 11.777 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7.159 7.159 0 0 0 1.048-.625 11.775 11.775 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.541 1.541 0 0 0-1.044-1.263 62.467 62.467 0 0 0-2.887-.87C9.843.266 8.69 0 8 0zm-.55 8.502L7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0zM8.002 12a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+              </svg>
+              {% else %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-person-circle position-absolute top-50 start-50 translate-middle" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+              </svg>
+              {% endif %}
+            </div>
+
+            <div class="col">
+              <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
+              {% if user.is_superuser %}
+                Superuser
+              {% else %}
+                {{ user.first_name }}
+              {% endif %}
+              </h5>
+            </div>
+
+          </div>
+        </a>
+
+        <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-2" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+
       </div>
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="#">{% translate "Settings" %}</a>-->
+<!--          </li>-->
 
           {% if user.is_authenticated %}
           <li class="nav-item">
             <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
-            <a class="nav-link" href="#" onclick="this.closest('form').submit();return false;">{% translate "Logout" %}</a>
+            <a class="nav-link" href="#" onclick="this.closest('form').submit();return false;">{% translate "Log out" %}</a>
             </form>
           </li>
           {% endif %}
 
         </ul>
 
-        <form class="d-flex mt-3" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-success" type="submit">Search</button>
-        </form>
+<!--        <form class="d-flex mt-3" role="search">-->
+<!--          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--          <button class="btn btn-success" type="submit">Search</button>-->
+<!--        </form>-->
 
       </div>
     </div>
