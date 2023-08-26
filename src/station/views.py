@@ -5,5 +5,5 @@ import modules.context as module_context
 
 
 def index(request):
-    context = module_context.get_default(request)
+    context = module_context.default_context(request)
     return render(request, 'index.html', context)

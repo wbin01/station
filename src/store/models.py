@@ -8,10 +8,7 @@ from django_resized import ResizedImageField  # pip: Pillow, django-resized
 
 
 class ModelProduct(models.Model):
-    """Store product model
-
-    Fields: id, is_admin, is_blocked, profile_image, user
-    """
+    """Store product model"""
     available_quantity = models.IntegerField(
         blank=False, null=False)
     available_quantity_is_displayed = models.BooleanField(
@@ -68,22 +65,3 @@ class ModelProduct(models.Model):
 
     def __str__(self):
         return self.title
-
-
-class ModelUserProfile(models.Model):
-    """Store user profile model
-
-    Fields: id, is_admin, is_blocked, profile_image, user
-    """
-    is_admin = models.BooleanField(
-        blank=False, null=False, default=False)
-    is_blocked = models.BooleanField(
-        blank=False, null=False, default=False)
-    profile_image = ResizedImageField(
-        size=[40, 40], crop=['middle', 'center'],
-        upload_to='img_store_profile/', blank=True, null=True)
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, blank=False, null=False)
-
-    def __str__(self):
-        return self.user.first_name

@@ -17,8 +17,9 @@ def signin(request):
     if request.user.is_authenticated:
         return redirect('index')
 
-    context = module_context.get_default(request)
+    context = module_context.default_context(request)
     context['brand_name_tab'] += ' - Access'
+
     if request.method == 'POST':
         sign_in_status = module_user.sign_in(request)
 
@@ -35,8 +36,9 @@ def signup(request):
     if request.user.is_authenticated:
         return redirect('index')
 
-    context = module_context.get_default(request)
+    context = module_context.default_context(request)
     context['brand_name_tab'] += ' - Access'
+
     if request.method == 'POST':
         sign_up_status = module_user.sign_up(request)
 

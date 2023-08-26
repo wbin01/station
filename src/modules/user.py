@@ -3,6 +3,7 @@ from django.contrib import auth
 
 import modules.generators as module_generator
 import modules.validations as module_validation
+import hub.models
 
 
 def sign_in(request) -> str:
@@ -56,5 +57,9 @@ def sign_up(request) -> str:
         username=username, first_name=name,
         email=email, password=password)
     user.save()
+
+    user_profile = (
+        hub.models.UserProfileModel.objects.create(user=user))
+    user_profile.save()
 
     return 'success'
