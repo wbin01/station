@@ -8,11 +8,9 @@ def user_profile(request, username):
     context = module_context.default_context(request, username)
     context['brand_name_tab'] += ' - Profile'
 
-    condition_to_access = [
-        context['user_profile'] and context['user_profile'].is_admin,
-        username == request.user.username]
-
-    if any(condition_to_access):
-        return render(request, 'hub_user_profile.html', context)
+    if context['user_profile'] and context['page_user_profile']:
+        if (username == request.user.username or
+                context['user_profile'].is_admin):
+            return render(request, 'hub_user_profile.html', context)
 
     return redirect('index')
